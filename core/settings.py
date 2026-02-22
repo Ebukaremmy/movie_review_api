@@ -1,9 +1,13 @@
 from pathlib import Path
+from datetime import timedelta
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-tx1oxsvz0=5jr-1d5=2a3t_d07tbw(isdnhi45q$=k_+lorn0!'
 
+# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 # Update this to allow local development and future deployment
@@ -23,6 +27,8 @@ INSTALLED_APPS = [
     # Third-party apps
     'rest_framework',
     'corsheaders',
+    'django_filters',
+    'rest_framework_simplejwt',
     
     # Your local app
     'reviews',
@@ -84,21 +90,25 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- ADDED FOR CAPSTONE PROJECT ---
+# --- CAPSTONE PROJECT SPECIFIC SETTINGS ---
 
 # Allow Frontend to access the API
 CORS_ALLOW_ALL_ORIGINS = True 
 
 REST_FRAMEWORK = {
-    # Requirement: Authentication
+    # Requirement: Authentication using JWT
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    # Requirement: Permissions (Anyone can read, only logged-in can write/edit)
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
     # Requirement: Pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
@@ -108,4 +118,13 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ),
+}
+
+# JWT Token Configuration
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'ALGORITHM': 'HS256',
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
