@@ -14,4 +14,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
+        model = Review
         fields = ['id', 'user', 'user_name', 'movie', 'movie_title', 'rating', 'comment', 'created_at']
+        # This ensures the 'user' field is handled automatically by the view, not the user input
+        read_only_fields = ['user']
