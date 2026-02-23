@@ -1,14 +1,21 @@
+import os
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tx1oxsvz0=5jr-1d5=2a3t_d07tbw(isdnhi45q$=k_+lorn0!'
+# Now pulling from the .env file
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to False if 'DEBUG' isn't found in .env
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Update this to allow local development and future deployment
 ALLOWED_HOSTS = ['*'] 
@@ -92,6 +99,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
+# This tells Django where to gather static files for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --- CAPSTONE PROJECT SPECIFIC SETTINGS ---
