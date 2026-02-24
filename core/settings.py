@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # MUST be at the top
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Added for production static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -97,10 +98,13 @@ USE_TZ = True
 
 # --- STATIC FILES CONFIGURATION ---
 STATIC_URL = 'static/'
-# This tells Django where to gather static files for production (e.g., for Render/Heroku)
+# This tells Django where to gather static files for production
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# Optional: Allows for a local static folder if you ever add custom CSS
+# Allows for a local static folder if you ever add custom CSS
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
+
+# WhiteNoise storage to compress and cache static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
