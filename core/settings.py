@@ -10,11 +10,9 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# Now pulling from the .env file
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Defaults to False if 'DEBUG' isn't found in .env
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Update this to allow local development and future deployment
@@ -97,11 +95,15 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# --- STATIC FILES CONFIGURATION ---
 STATIC_URL = 'static/'
-# This tells Django where to gather static files for production
+# This tells Django where to gather static files for production (e.g., for Render/Heroku)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Optional: Allows for a local static folder if you ever add custom CSS
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # --- CAPSTONE PROJECT SPECIFIC SETTINGS ---
 
