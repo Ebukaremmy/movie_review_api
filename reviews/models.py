@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Movie(models.Model):
-    # Based on your ERD: id(PK), title, description, genre, release_year, created_at
+    """
+    Data model representing a film entry in the database.
+    Stores core metadata including title, genre, and release year.
+    """
     title = models.CharField(max_length=255)
     description = models.TextField()
     genre = models.CharField(max_length=100)
@@ -14,11 +17,19 @@ class Movie(models.Model):
         return self.title
 
 class Review(models.Model):
-    # Based on your ERD: id(PK), user_id(FK), movie_id(FK), rating, comment, timestamps
+    """
+    Relational model representing user-submitted feedback.
+    Links individual users to specific movies through foreign key relationships.
+    """
+    # Established relationships between Users and Movies
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
+    
+    # Validation logic for standardized rating metrics (1-5 scale)
     rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField()
+    
+    # Automated audit timestamps for record creation and modifications
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

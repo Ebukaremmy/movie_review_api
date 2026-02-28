@@ -3,21 +3,22 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Initialize environment variables from a .env file for security and portability
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Define the base directory of the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Core Security: Secret key is retrieved from environment variables in production
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# Debug Mode: Controlled via environment variables to prevent leakage in production
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
+# Networking: Define authorized hostnames for application access
 ALLOWED_HOSTS = ['*'] 
 
-# Application definition
+# Application registry: Includes core Django modules, third-party extensions, and local apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,16 +27,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # Third-party apps
+    # API Framework and Security Extensions
     'rest_framework',
     'corsheaders',
     'django_filters',
     'rest_framework_simplejwt',
     
-    # Your local app
+    # Internal Business Logic
     'reviews',
 ]
 
+# Middleware Pipeline: Processes requests and responses globally
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -50,6 +52,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# Template Engine Configuration: Defines how HTML and interface elements are rendered
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -67,7 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
+# Persistence Layer: Configuration for the primary data store
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -75,7 +78,7 @@ DATABASES = {
     }
 }
 
-# Password validation
+# User Security: Validation rules for password strength and complexity
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -83,13 +86,13 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-# Internationalization
+# Localization and Timezone management
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# --- STATIC FILES CONFIGURATION ---
+# Asset Management: Configuration for serving CSS, JS, and static media
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] if os.path.exists(os.path.join(BASE_DIR, 'static')) else []
@@ -97,23 +100,26 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# --- CAPSTONE PROJECT SPECIFIC SETTINGS ---
+# --- API SERVICES AND INTEGRATION SETTINGS ---
 
+# Cross-Origin Resource Sharing (CORS) policy for frontend integration
 CORS_ALLOW_ALL_ORIGINS = True 
 
+# Django REST Framework: Centralized API logic including auth, permissions, and pagination
 REST_FRAMEWORK = {
-    # Authentication & Permissions
+    # Authentication Strategies
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    # Access Control Policies
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
-    # Pagination
+    # Result Set Management
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    # Filtering, Search, and Ordering
+    # Data Retrieval Backends (Filtering, Search, and Sorting)
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
@@ -121,7 +127,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# JWT Token Configuration
+# SimpleJWT: Configuration for stateless Token-based Authentication
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -130,8 +136,8 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# --- LOGGING & ERROR TRACKING CONFIGURATION ---
-# This system captures server-side events and errors for monitoring API performance.
+# --- OBSERVABILITY AND ERROR TRACKING ---
+# Comprehensive logging suite for performance monitoring and diagnostic tracing
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

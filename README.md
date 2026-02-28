@@ -1,100 +1,109 @@
 🎬 Movie Review API
 
-Hi, I’m Ebuka Ikegwuonu, and this is my Backend Capstone Project.
+A secure, searchable, and production-ready RESTful backend for managing movies and authentic user reviews.
 
-I built this API to provide movie lovers with a clean, secure, and scalable system where they can explore movies and share authentic reviews.
+Hi, I’m Ebuka Ikegwuonu.
+This project was built as my Backend Capstone to solve a common challenge: organizing movie data in a structured way, allowing real users to leave reviews, and protecting the system using modern authentication standards.
 
 🚀 Live Demo:
 https://movie-review-api-k2ws.onrender.com
 
 🌟 Features
-🎬 Browse Movies
+🍿 Smart Movie Management
 
-View movie titles, descriptions, and genres.
+Full CRUD Operations – Create, Read, Update, and Delete movies
 
-Scalable structure designed to handle large datasets.
+Search & Filtering – Quickly find movies by title or genre
 
-⭐ Write Reviews
+Pagination – Results are returned in chunks (10 per page) for better performance
 
-Authenticated users can submit ratings and comments.
+RESTful Design – Clean and structured endpoints following best practices
 
-Each review is linked to a specific movie and user.
+⭐ Real User Reviews
 
-🔐 Secure Authentication
+Relational Database Design – Reviews are connected using ForeignKey relationships
 
-Implemented JWT (JSON Web Token) authentication.
+Each review is linked to:
 
-Only authenticated users can create, update, or delete reviews.
+A specific movie
 
-⚡ Pagination for Performance
+A specific authenticated user
 
-The API loads data in manageable chunks.
+Authenticated Reviews Only – Users must be logged in to create reviews
 
-Ensures fast performance even with thousands of records.
+This ensures structured and reliable data management.
 
-🛠 Admin Dashboard
+🔐 Security & Authentication
 
-Built-in Django Admin interface.
+JWT Authentication (SimpleJWT)
+Secure token-based authentication system
 
-Full control over users, movies, and reviews.
+Permission Control
+
+Anyone can browse movies
+
+Only authenticated users can create or modify content
+
+Unauthorized users receive proper HTTP status codes (403 Forbidden / 401 Unauthorized)
 
 🛠 Tech Stack
 
-Framework: Django & Django REST Framework
+Backend: Django
 
-Database: PostgreSQL (Production), SQLite (Development)
+API Framework: Django REST Framework
+
+Database (Production): PostgreSQL
+
+Database (Local): SQLite
 
 Authentication: JWT (SimpleJWT)
 
 Deployment: Render
 
+Static File Handling: WhiteNoise
+
+📡 API Endpoints
+Endpoint	Method	Description
+/	GET	Custom Project Dashboard
+/api/movies/	GET, POST	List or create movies
+/api/movies/?search=...	GET	Search movies
+/api/movies/<id>/	GET, PUT, DELETE	Manage specific movie
+/api/reviews/	GET, POST	List or create reviews
+/api/token/	POST	Obtain JWT access token
 ⚙️ Local Setup Instructions
-
-To run this project locally:
-
 1️⃣ Clone the Repository
 git clone https://github.com/Ebukaremmy/movie_review_api.git
-cd YOUR-REPO-NAME
-2️⃣ Create & Activate Virtual Environment
+cd movie_review_api
+2️⃣ Create and Activate Virtual Environment
 python -m venv venv
 
-Activate:
-
-Windows
+Windows:
 
 venv\Scripts\activate
 
-Mac/Linux
+Mac/Linux:
 
 source venv/bin/activate
-3️⃣ Install Dependencies
+3️⃣ Install Dependencies & Run Server
 pip install -r requirements.txt
-4️⃣ Run Migrations
 python manage.py migrate
-5️⃣ Start the Development Server
 python manage.py runserver
 
-Visit:
+Server will run at:
 
 http://127.0.0.1:8000/
-📡 Key API Endpoints
-Endpoint	Description
-/api/movies/	List and manage movies
-/api/reviews/	List and manage reviews
-/api/token/	Obtain JWT access token
-/admin/	Admin dashboard
-🎯 Project Highlights
+🎯 Technical Highlights
 
-This project demonstrates:
+Structured RESTful API architecture
 
-RESTful API design
+Proper HTTP status codes (200, 201, 204, 403, 401)
 
-Relational database modeling
+Custom logging configuration for request tracking
 
-JWT authentication & security
+Clean database relationships using ForeignKey
 
-Pagination for scalability
+Production-ready deployment on Render
 
-Deployment to a live production environment
+Secure environment variable handling
 
 Built with dedication by Ebuka Ikegwuonu 🚀

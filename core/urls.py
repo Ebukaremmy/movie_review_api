@@ -1,21 +1,21 @@
 from django.contrib import admin
 from django.urls import path, include
-from reviews.views import home_view  # Import your new view from the reviews app
+from reviews.views import home_view 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 urlpatterns = [
-    # This is the "Home Page" at http://127.0.0.1:8000/
+    # Application Entry Point: Root landing page for the project
     path('', home_view, name='home'),  
     
-    # Admin Panel at http://127.0.0.1:8000/admin/
+    # Administrative Interface: Secure management portal for database records
     path('admin/', admin.site.urls),
     
-    # Movie Review API endpoints at http://127.0.0.1:8000/api/
+    # API Routing: Delegation of requests to the internal Review System module
     path('api/', include('reviews.urls')),
     
-    # JWT Authentication Endpoints (Login)
+    # Authentication Services: Endpoint for obtaining JWT access and refresh tokens
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     
-    # JWT Token Refresh
+    # Token Lifecycle Management: Endpoint for renewing expired access tokens
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
