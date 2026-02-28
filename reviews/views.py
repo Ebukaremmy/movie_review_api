@@ -8,13 +8,12 @@ from .serializers import MovieSerializer, ReviewSerializer
 class MovieViewSet(viewsets.ModelViewSet):
     """
     Handles full CRUD (Create, Read, Update, Delete) for movies.
-    Permissions: Anyone can view, but only authenticated users can add/edit.
     """
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    # Enables the Search Bar and Ordering in the "Filters" button
+    # These lines enable the Search UI and Ordering in the browsable API
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'genre']
     ordering_fields = ['release_year', 'title']
@@ -22,14 +21,13 @@ class MovieViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     """
     Handles full CRUD for reviews.
-    Permissions: Anyone can view, but only authenticated users can post reviews.
     """
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        # Automatically links the review to the user currently logged in via JWT
+        # Automatically links the review to the user currently logged in
         serializer.save(user=self.request.user)
 
 
@@ -37,31 +35,33 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 def home_view(request):
     """
-    A clean landing page for the root URL providing navigation.
+    A clean dashboard for navigating the API endpoints.
     """
     return HttpResponse("""
         <html>
             <head>
                 <style>
-                    body { font-family: sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: auto; }
-                    h1 { color: #2c3e50; }
+                    body { font-family: sans-serif; line-height: 1.6; padding: 40px; max-width: 800px; margin: auto; background-color: #f8f9fa; }
+                    .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+                    h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
                     ul { list-style: none; padding: 0; }
-                    li { background: #f4f4f4; margin: 5px 0; padding: 10px; border-radius: 5px; }
-                    a { text-decoration: none; color: #3498db; font-weight: bold; }
-                    a:hover { color: #2980b9; }
+                    li { margin: 15px 0; }
+                    a { text-decoration: none; color: #3498db; font-weight: bold; font-size: 1.1em; }
+                    a:hover { color: #2c3e50; }
                 </style>
                 <title>Movie Review API</title>
             </head>
             <body>
-                <h1>Welcome to the Movie Review API</h1>
-                <p>Hello, I'm Ebuka. This is my Capstone Project showing a full CRUD API with Search and JWT Auth.</p>
-                <h3>API Endpoints:</h3>
-                <ul>
-                    <li><a href='/api/movies/'>Movies API</a> - View all movies or add new ones (POST)</li>
-                    <li><a href='/api/reviews/'>Reviews API</a> - View and write reviews</li>
-                    <li><a href='/api/token/'>Auth Token</a> - Get your JWT Access Token</li>
-                    <li><a href='/admin/'>Admin Panel</a> - Management Dashboard</li>
-                </ul>
+                <div class="card">
+                    <h1>Movie Review API Dashboard</h1>
+                    <p>Select an endpoint below to interact with the API documentation and resources.</p>
+                    <ul>
+                        <li><a href='/api/movies/'>📁 Movies Endpoint</a></li>
+                        <li><a href='/api/reviews/'>💬 Reviews Endpoint</a></li>
+                        <li><a href='/api/token/'>🔑 Authentication (JWT)</a></li>
+                        <li><a href='/admin/'>⚙️ Admin Control Panel</a></li>
+                    </ul>
+                </div>
             </body>
         </html>
     """)
